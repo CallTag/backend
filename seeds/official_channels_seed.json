@@ -1,0 +1,117 @@
+[
+  {
+    "channel_slug": "aduannomor-komdigi",
+    "title": "AduanNomor.id (Kementerian Komdigi)",
+    "authority_name": "Kementerian Komunikasi dan Digital RI",
+    "related_categories": ["APK_SNIFFING", "IMPERSONATION", "JUDOL", "SOCIAL_ENG", "TELEMARKETING"],
+    "description": "Portal resmi pemerintah untuk melaporkan nomor seluler (MSISDN) yang digunakan untuk penipuan telepon, pengiriman file APK berbahaya, promosi judi online, atau spam meresahkan agar diblokir permanen oleh operator seluler.",
+    "action_links": {
+      "website_url": "https://aduannomor.id",
+      "email": "kontak@aduannomor.id"
+    },
+    "required_evidence_checklist": [
+      "Nomor telepon pelaku yang terlihat jelas (format 08xx / +628xx)",
+      "Tangkapan layar (screenshot) riwayat panggilan masuk atau isi pesan WhatsApp/SMS",
+      "Kronologi singkat waktu kejadian dan modus yang digunakan pelaku"
+    ],
+    "step_by_step_guide": [
+      "Salin nomor pelaku dari riwayat deteksi aplikasi CallTag.",
+      "Buka portal AduanNomor.id dan pilih kategori pelaporan Penipuan atau Spam.",
+      "Unggah tangkapan layar bukti panggilan atau pesan penipuan untuk verifikasi pemblokiran MSISDN."
+    ],
+    "display_order": 1,
+    "is_active": true
+  },
+  {
+    "channel_slug": "cekrekening-iasc",
+    "title": "CekRekening.id & IASC (Indonesia Anti-Scam Centre)",
+    "authority_name": "Kementerian Komdigi & Otoritas Jasa Keuangan (OJK)",
+    "related_categories": ["IMPERSONATION", "APK_SNIFFING", "SOCIAL_ENG"],
+    "description": "Pusat pelaporan dan pengecekan rekening bank serta akun E-Wallet penipu untuk mempercepat pemblokiran dana hasil kejahatan keuangan digital.",
+    "action_links": {
+      "website_url": "https://iasc.ojk.go.id",
+      "phone_dial": "157"
+    },
+    "required_evidence_checklist": [
+      "Nama bank atau penyedia E-Wallet dan nomor rekening tujuan pelaku",
+      "Bukti struk transfer atau mutasi rekening korban",
+      "Bukti percakapan/telepon yang mengarahkan korban melakukan transfer"
+    ],
+    "step_by_step_guide": [
+      "Segera hubungi Call Center bank yang Anda gunakan untuk meminta pemblokiran darurat.",
+      "Laporkan nomor rekening pelaku ke portal IASC (iasc.ojk.go.id) dan CekRekening.id (cekrekening.id).",
+      "Simpan tanda terima laporan elektronik sebagai lampiran saat membuat Laporan Polisi (LP)."
+    ],
+    "display_order": 2,
+    "is_active": true
+  },
+  {
+    "channel_slug": "satgas-pasti-ojk",
+    "title": "Satgas PASTI / Kontak OJK 157",
+    "authority_name": "Satuan Tugas Pemberantasan Aktivitas Keuangan Ilegal (OJK)",
+    "related_categories": ["PINJOL_DC", "IMPERSONATION"],
+    "description": "Kanal resmi pengaduan teror Debt Collector Pinjaman Online (Pinjol) ilegal, penyebaran data pribadi kontak darurat, serta penipuan investasi bodong.",
+    "action_links": {
+      "website_url": "https://sipasti.ojk.go.id",
+      "phone_dial": "157",
+      "whatsapp_url": "https://wa.me/6281157157157",
+      "email": "waspadainvestasi@ojk.go.id"
+    },
+    "required_evidence_checklist": [
+      "Nama aplikasi atau entitas Pinjol Ilegal / Investasi Bodong",
+      "Daftar nomor telepon atau WhatsApp penagih utang (Debt Collector) yang meneror",
+      "Rekaman suara atau tangkapan layar ancaman intimidasi/penyebaran data"
+    ],
+    "step_by_step_guide": [
+      "Jangan melakukan pembayaran ke rekening pribadi penagih Pinjol Ilegal.",
+      "Kirimkan laporan melalui WhatsApp resmi Kontak OJK di 0811-5715-7157 atau portal sipasti.ojk.go.id.",
+      "Blokir seluruh nomor peneror menggunakan fitur Auto-Block di CallTag."
+    ],
+    "display_order": 3,
+    "is_active": true
+  },
+  {
+    "channel_slug": "patroli-siber-polri",
+    "title": "Patroli Siber Polri (Dittipidsiber Bareskrim)",
+    "authority_name": "Kepolisian Negara Republik Indonesia (Polri)",
+    "related_categories": ["APK_SNIFFING", "IMPERSONATION", "PINJOL_DC", "JUDOL", "SOCIAL_ENG"],
+    "description": "Layanan pelaporan tindak pidana siber termasuk peretasan perangkat via file APK (illegal access), penipuan daring, pemerasan, dan pengancaman.",
+    "action_links": {
+      "website_url": "https://patrolisiber.id",
+      "phone_dial": "110"
+    },
+    "required_evidence_checklist": [
+      "Kartu identitas pelapor (KTP)",
+      "Cetakan bukti transfer bank, tangkapan layar chat, dan nomor telepon pelaku",
+      "File atau tautan berbahaya yang dikirim pelaku (jangan dibuka/diinstal)"
+    ],
+    "step_by_step_guide": [
+      "Kumpulkan seluruh bukti digital dalam satu folder tanpa menghapus riwayat chat asli.",
+      "Buat aduan awal melalui portal Patroli Siber Polri atau datangi SPKT Polres/Polda terdekat untuk membuat Laporan Polisi (LP) resmi.",
+      "Gunakan surat tanda terima LP dari Kepolisian untuk pengajuan pembekuan rekening pelaku di bank terkait."
+    ],
+    "display_order": 4,
+    "is_active": true
+  },
+  {
+    "channel_slug": "lapor-go-id",
+    "title": "LAPOR! (Layanan Aspirasi dan Pengaduan Online Rakyat)",
+    "authority_name": "Kementerian PANRB, Ombudsman RI, & Kantor Staf Presiden",
+    "related_categories": ["IMPERSONATION", "TELEMARKETING"],
+    "description": "Sistem Pengelolaan Pengaduan Pelayanan Publik Nasional (SP4N) untuk melaporkan penyalahgunaan wewenang atau pencatutan nama instansi pelayanan publik.",
+    "action_links": {
+      "website_url": "https://www.lapor.go.id"
+    },
+    "required_evidence_checklist": [
+      "Kronologi kejadian beserta lokasi dan waktu layanan",
+      "Nama instansi terkait dan bukti dukung foto/dokumen"
+    ],
+    "step_by_step_guide": [
+      "Buka situs lapor.go.id dan pilih klasifikasi laporan Pengaduan.",
+      "Tulis judul, isi laporan, tanggal, serta instansi tujuan secara jelas.",
+      "Lampirkan bukti pendukung dan pantau tindak lanjut menggunakan nomor tiket pengaduan."
+    ],
+    "display_order": 5,
+    "is_active": true
+  }
+]

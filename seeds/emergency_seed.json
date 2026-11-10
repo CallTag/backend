@@ -1,0 +1,527 @@
+[
+  {
+    "code": "ID-NAT-112",
+    "scope": "NATIONAL",
+    "agency_type": "TERPADU",
+    "name": "Panggilan Darurat Terpadu Nasional (Layanan 112)",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["112"]
+    },
+    "capabilities": [
+      "Koordinasi Darurat Terpadu Bebas Pulsa",
+      "Kebakaran, Medis, Kecelakaan, & Keamanan",
+      "Terhubung ke Command Center Kabupaten/Kota"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-110",
+    "scope": "NATIONAL",
+    "agency_type": "POLISI",
+    "name": "Kepolisian Negara Republik Indonesia (Polri 110)",
+    "contacts": {
+      "short_code": "110",
+      "phone_numbers": ["110"]
+    },
+    "capabilities": [
+      "Laporan Tindak Kriminal & Gangguan Kamtibmas",
+      "Kecelakaan Lalu Lintas",
+      "Ancaman Pemerasan & Teror Fisik"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-113",
+    "scope": "NATIONAL",
+    "agency_type": "DAMKAR",
+    "name": "Pemadam Kebakaran & Penyelamatan (Damkar 113)",
+    "contacts": {
+      "short_code": "113",
+      "phone_numbers": ["113"]
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran Gedung & Permukiman",
+      "Penyelamatan & Evakuasi Darurat Non-Kebakaran"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-119",
+    "scope": "NATIONAL",
+    "agency_type": "AMBULANS_RS",
+    "name": "Ambulans & Public Safety Center (PSC 119 / 118 Kemenkes)",
+    "contacts": {
+      "short_code": "119",
+      "phone_numbers": ["119", "118"]
+    },
+    "capabilities": [
+      "Penjemputan Ambulans Gawat Darurat Medis",
+      "Informasi Ketersediaan Ruang IGD & ICU Rumah Sakit",
+      "Pertolongan Pertama Kecelakaan"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-115",
+    "scope": "NATIONAL",
+    "agency_type": "SAR",
+    "name": "Badan Nasional Pencarian dan Pertolongan (BASARNAS 115)",
+    "contacts": {
+      "short_code": "115",
+      "phone_numbers": ["115", "+622165867510"]
+    },
+    "capabilities": [
+      "Evakuasi Bencana Alam (Banjir, Gempa, Tanah Longsor)",
+      "Pencarian Orang Hilang di Gunung/Hutan/Laut",
+      "Kecelakaan Transportasi Laut & Udara"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-123",
+    "scope": "NATIONAL",
+    "agency_type": "PLN",
+    "name": "PLN Contact Center (Gangguan & Bahaya Listrik 123)",
+    "contacts": {
+      "short_code": "123",
+      "phone_numbers": ["123", "+6221123"]
+    },
+    "capabilities": [
+      "Korsleting & Percikan Api pada Tiang/Gardu Listrik",
+      "Kabel Listrik Tegangan Tinggi Putus Akibat Pohon Tumbang",
+      "Pemadaman Listrik Darurat Saat Banjir"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-NAT-14080",
+    "scope": "NATIONAL",
+    "agency_type": "JASA_MARGA",
+    "name": "Jasa Marga One Call Center (Darurat Jalan Tol 14080)",
+    "contacts": {
+      "short_code": "14080",
+      "phone_numbers": ["14080"]
+    },
+    "capabilities": [
+      "Derek Resmi Gratis ke Gerbang Tol Terdekat",
+      "Ambulans & Patroli Jalan Raya (PJR) di Ruas Tol",
+      "Penanganan Kendaraan Mogok atau Kecelakaan di Jalan Tol"
+    ],
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JK-JKT-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Penanggulangan Kebakaran dan Penyelamatan (Gulkarmat) Provinsi DKI Jakarta",
+    "province": "DKI Jakarta",
+    "city_regency": "Jakarta Pusat",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["+62216344215", "+62216344579"],
+      "whatsapp_number": "+628990997113",
+      "whatsapp_template": "Halo Posko Damkar DKI Jakarta, saya membutuhkan bantuan darurat kebakaran/evakuasi di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran",
+      "Evakuasi Ular, Biawak, & Sarang Tawon",
+      "Pelepasan Cincin Tersangkut, Evakuasi Pohon Tumbang & Banjir"
+    ],
+    "address": "Jl. KH. Zainul Arifin No.71, Duri Pulo, Kec. Gambir, Jakarta Pusat",
+    "location": {
+      "type": "Point",
+      "coordinates": [106.8131, -6.1615]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JK-JKT-POLISI-01",
+    "scope": "LOCAL",
+    "agency_type": "POLISI",
+    "name": "SPKT Polda Metro Jaya & Polres Metro Jakarta Pusat",
+    "province": "DKI Jakarta",
+    "city_regency": "Jakarta Pusat",
+    "contacts": {
+      "short_code": "110",
+      "phone_numbers": ["+62215234000", "+62213909922"],
+      "whatsapp_number": "+62811998110",
+      "whatsapp_template": "Halo Petugas Piket SPKT Kepolisian Jakarta, saya ingin melaporkan kejadian darurat di lokasi: "
+    },
+    "capabilities": [
+      "Patroli Cepat Gangguan Kamtibmas",
+      "Penerimaan Laporan Polisi (LP) Kejahatan Siber & Penipuan",
+      "Penanganan TKP Kecelakaan & Kriminalitas"
+    ],
+    "address": "Jl. Garut No.1, Menteng, Kec. Menteng, Jakarta Pusat",
+    "location": {
+      "type": "Point",
+      "coordinates": [106.8384, -6.2018]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JK-JKT-RS-01",
+    "scope": "LOCAL",
+    "agency_type": "AMBULANS_RS",
+    "name": "IGD RSUPN Dr. Cipto Mangunkusumo (RSCM) & AGD Dinkes DKI",
+    "province": "DKI Jakarta",
+    "city_regency": "Jakarta Pusat",
+    "contacts": {
+      "short_code": "119",
+      "phone_numbers": ["+62211500135", "+622165303118"],
+      "whatsapp_number": "+628111922119",
+      "whatsapp_template": "Halo Petugas Ambulans Gawat Darurat DKI Jakarta, butuh ambulans segera di lokasi: "
+    },
+    "capabilities": [
+      "Instalasi Gawat Darurat (IGD) Rujukan Nasional 24 Jam",
+      "Penjemputan Ambulans Gawat Darurat (AGD Dinkes)",
+      "Trauma Center & Intensive Care"
+    ],
+    "address": "Jl. Pangeran Diponegoro No.71, Kenari, Kec. Senen, Jakarta Pusat",
+    "location": {
+      "type": "Point",
+      "coordinates": [106.8468, -6.1973]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JB-BDG-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Kebakaran dan Penanggulangan Bencana (Diskar PB) Kota Bandung",
+    "province": "Jawa Barat",
+    "city_regency": "Kota Bandung",
+    "contacts": {
+      "short_code": "113",
+      "phone_numbers": ["+6222113", "+62227207113"],
+      "whatsapp_number": "+62811207113",
+      "whatsapp_template": "Halo Posko Diskar PB Kota Bandung, mohon bantuan darurat kebakaran/rescue di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran Kota Bandung",
+      "Animal Rescue (Evakuasi Ular, Sarang Tawon, Kucing Terjebak)",
+      "Evakuasi Cincin Tersangkut, Pohon Tumbang & Penyelamatan Banjir"
+    ],
+    "address": "Jl. Sukabumi No.17, Kacapiring, Kec. Batununggal, Kota Bandung",
+    "location": {
+      "type": "Point",
+      "coordinates": [107.6365, -6.9175]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JB-BDG-POLISI-01",
+    "scope": "LOCAL",
+    "agency_type": "POLISI",
+    "name": "Polrestabes Bandung (Layanan Kang Busar & SPKT)",
+    "province": "Jawa Barat",
+    "city_regency": "Kota Bandung",
+    "contacts": {
+      "short_code": "110",
+      "phone_numbers": ["+62224203500", "+62224244444"],
+      "whatsapp_number": "+6282130201996",
+      "whatsapp_template": "Halo Polrestabes Bandung, saya ingin melaporkan kejadian darurat di lokasi: "
+    },
+    "capabilities": [
+      "Tim Prabu & Patroli Cepat Kamtibmas Kota Bandung",
+      "Sentra Pelayanan Kepolisian Terpadu (SPKT) 24 Jam",
+      "Unit Tipidter / Siber Satreskrim Polrestabes Bandung"
+    ],
+    "address": "Jl. Merdeka No.18-21, Babakan Ciamis, Kec. Sumur Bandung, Kota Bandung",
+    "location": {
+      "type": "Point",
+      "coordinates": [107.6098, -6.9126]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JB-BDG-RS-01",
+    "scope": "LOCAL",
+    "agency_type": "AMBULANS_RS",
+    "name": "IGD RSUP Dr. Hasan Sadikin (RSHS) & PSC 119 Kota Bandung",
+    "province": "Jawa Barat",
+    "city_regency": "Kota Bandung",
+    "contacts": {
+      "short_code": "119",
+      "phone_numbers": ["+62222551111", "+62222034953"],
+      "whatsapp_number": "+628112442119",
+      "whatsapp_template": "Halo Petugas PSC 119 / IGD RSHS Bandung, butuh bantuan ambulans darurat di lokasi: "
+    },
+    "capabilities": [
+      "IGD Rujukan Utama Jawa Barat 24 Jam",
+      "Layanan Ambulans PSC 119 Dinas Kesehatan Kota Bandung",
+      "Penanganan Kegawatdaruratan Medis & Kecelakaan"
+    ],
+    "address": "Jl. Pasteur No.38, Pasteur, Kec. Sukajadi, Kota Bandung",
+    "location": {
+      "type": "Point",
+      "coordinates": [107.5988, -6.8969]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JI-SBY-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Pemadam Kebakaran dan Penyelamatan (DPKP) Kota Surabaya",
+    "province": "Jawa Timur",
+    "city_regency": "Kota Surabaya",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["+62313533843", "+62313533844"],
+      "whatsapp_number": "+6281131112112",
+      "whatsapp_template": "Halo Command Center 112 / Damkar Surabaya, mohon bantuan darurat di lokasi: "
+    },
+    "capabilities": [
+      "Respons Cepat Kebakaran < 7 Menit Terintegrasi Command Center 112",
+      "Evakuasi Hewan Liar, Sarang Tawon, & Penyelamatan Teknis",
+      "Penanganan Pohon Tumbang & Kecelakaan Berat"
+    ],
+    "address": "Jl. Pasar Turi No.21, Jepara, Kec. Bubutan, Kota Surabaya",
+    "location": {
+      "type": "Point",
+      "coordinates": [112.7297, -7.2458]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JI-SBY-POLISI-01",
+    "scope": "LOCAL",
+    "agency_type": "POLISI",
+    "name": "SPKT Polrestabes Surabaya",
+    "province": "Jawa Timur",
+    "city_regency": "Kota Surabaya",
+    "contacts": {
+      "short_code": "110",
+      "phone_numbers": ["+62313523927", "+62318438835"],
+      "whatsapp_number": "+6281133370075",
+      "whatsapp_template": "Halo SPKT Polrestabes Surabaya, saya ingin melaporkan kejadian darurat di lokasi: "
+    },
+    "capabilities": [
+      "Patroli Jogoboyo & Respons Cepat Kejahatan Jalanan",
+      "Pelayanan Laporan Polisi (LP) & Pengaduan Penipuan Siber"
+    ],
+    "address": "Jl. Sikatan No.1, Krembangan Sel., Kec. Krembangan, Kota Surabaya",
+    "location": {
+      "type": "Point",
+      "coordinates": [112.7371, -7.2356]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JI-SBY-RS-01",
+    "scope": "LOCAL",
+    "agency_type": "AMBULANS_RS",
+    "name": "IGD RSUD Dr. Soetomo Surabaya & Ambulans TGC 112",
+    "province": "Jawa Timur",
+    "city_regency": "Kota Surabaya",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["+62315501078", "+62315501239"],
+      "whatsapp_number": "+6281230257400",
+      "whatsapp_template": "Halo IGD RSUD Dr. Soetomo / TGC Surabaya, butuh bantuan medis darurat di lokasi: "
+    },
+    "capabilities": [
+      "IGD & Pusat Trauma Terpadu Indonesia Timur",
+      "Tim Gerak Cepat (TGC) Ambulans Medis Kota Surabaya"
+    ],
+    "address": "Jl. Mayjen Prof. Dr. Moestopo No.6-8, Airlangga, Kec. Gubeng, Kota Surabaya",
+    "location": {
+      "type": "Point",
+      "coordinates": [112.7582, -7.2682]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JT-SMG-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Pemadam Kebakaran Kota Semarang",
+    "province": "Jawa Tengah",
+    "city_regency": "Kota Semarang",
+    "contacts": {
+      "short_code": "113",
+      "phone_numbers": ["+62247605871", "+62247607076"],
+      "whatsapp_number": "+628112700113",
+      "whatsapp_template": "Halo Posko Damkar Kota Semarang, mohon bantuan pemadaman/evakuasi darurat di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran & Penyelamatan Jiwa",
+      "Evakuasi Ular, Sarang Tawon, Cincin Tersangkut & Hewan Peliharaan"
+    ],
+    "address": "Jl. Madukoro Raya No.6, Krobokan, Kec. Semarang Barat, Kota Semarang",
+    "location": {
+      "type": "Point",
+      "coordinates": [110.3958, -6.9806]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JT-SMG-POLISI-01",
+    "scope": "LOCAL",
+    "agency_type": "POLISI",
+    "name": "Polrestabes Semarang (Aplikasi Libas & SPKT)",
+    "province": "Jawa Tengah",
+    "city_regency": "Kota Semarang",
+    "contacts": {
+      "short_code": "110",
+      "phone_numbers": ["+62248444444", "+62248413344"],
+      "whatsapp_number": "+628882474444",
+      "whatsapp_template": "Halo Polrestabes Semarang, saya membutuhkan bantuan kepolisian darurat di lokasi: "
+    },
+    "capabilities": [
+      "Tim Elang Hebat Semarang (TEHS) & Patroli Kamtibmas",
+      "SPKT & Pengaduan Tindak Pidana Siber"
+    ],
+    "address": "Jl. Dr. Sutomo No.19, Barusari, Kec. Semarang Sel., Kota Semarang",
+    "location": {
+      "type": "Point",
+      "coordinates": [110.4081, -6.9932]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-JT-SMG-RS-01",
+    "scope": "LOCAL",
+    "agency_type": "AMBULANS_RS",
+    "name": "IGD RSUP Dr. Kariadi & Ambulans Hebat Kota Semarang",
+    "province": "Jawa Tengah",
+    "city_regency": "Kota Semarang",
+    "contacts": {
+      "short_code": "119",
+      "phone_numbers": ["+62248413476", "+62241500202"],
+      "whatsapp_number": "+628112900132",
+      "whatsapp_template": "Halo Petugas Ambulans Hebat / IGD Kariadi Semarang, mohon bantuan medis di lokasi: "
+    },
+    "capabilities": [
+      "IGD Rumah Sakit Rujukan Utama Jawa Tengah",
+      "Layanan Ambulans Hebat 24 Jam Gratis Warga Semarang"
+    ],
+    "address": "Jl. DR. Sutomo No.16, Randusari, Kec. Semarang Sel., Kota Semarang",
+    "location": {
+      "type": "Point",
+      "coordinates": [110.4072, -6.9945]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-YO-YGY-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Pemadam Kebakaran dan Penyelamatan (Damkarmat) Kota Yogyakarta",
+    "province": "DI Yogyakarta",
+    "city_regency": "Kota Yogyakarta",
+    "contacts": {
+      "short_code": "113",
+      "phone_numbers": ["+62274587101", "+62274515865"],
+      "whatsapp_number": "+628112700113",
+      "whatsapp_template": "Halo Posko Damkarmat Kota Yogyakarta, mohon bantuan darurat di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran",
+      "Evakuasi Ular, Sarang Tawon, dan Penyelamatan Non-Kebakaran"
+    ],
+    "address": "Jl. Kenari No.56, Muja Muju, Kec. Umbulharjo, Kota Yogyakarta",
+    "location": {
+      "type": "Point",
+      "coordinates": [110.3911, -7.7998]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-SU-MDN-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Pemadam Kebakaran dan Penyelamatan Kota Medan",
+    "province": "Sumatera Utara",
+    "city_regency": "Kota Medan",
+    "contacts": {
+      "short_code": "113",
+      "phone_numbers": ["+62614515356", "+6261113"],
+      "whatsapp_number": "+628116565113",
+      "whatsapp_template": "Halo Posko Damkar Kota Medan, mohon bantuan darurat di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran Kota Medan",
+      "Penyelamatan & Evakuasi Darurat Warga"
+    ],
+    "address": "Jl. Candi Borobudur No.2, Petisah Tengah, Kec. Medan Petisah, Kota Medan",
+    "location": {
+      "type": "Point",
+      "coordinates": [98.6705, 3.5861]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-SN-MKS-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "Dinas Pemadam Kebakaran dan Penyelamatan (Damkarmat) Kota Makassar",
+    "province": "Sulawesi Selatan",
+    "city_regency": "Kota Makassar",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["+62411854444", "+62411871113"],
+      "whatsapp_number": "+628114109113",
+      "whatsapp_template": "Halo Posko Damkar Kota Makassar, mohon bantuan darurat di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran & Animal Rescue Kota Makassar",
+      "Evakuasi Banjir & Penyelamatan Darurat"
+    ],
+    "address": "Jl. Dr. Ratulangi No.11, Mariso, Kota Makassar",
+    "location": {
+      "type": "Point",
+      "coordinates": [119.4139, -5.1583]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  },
+  {
+    "code": "ID-BA-DPS-DAMKAR-01",
+    "scope": "LOCAL",
+    "agency_type": "DAMKAR",
+    "name": "BPBD & Pemadam Kebakaran Kota Denpasar",
+    "province": "Bali",
+    "city_regency": "Kota Denpasar",
+    "contacts": {
+      "short_code": "112",
+      "phone_numbers": ["+62361223333", "+62361484013"],
+      "whatsapp_number": "+628113895112",
+      "whatsapp_template": "Halo Posko Damkar / BPBD Kota Denpasar, mohon bantuan darurat di lokasi: "
+    },
+    "capabilities": [
+      "Pemadaman Kebakaran & Ambulans Juara BPBD Denpasar",
+      "Evakuasi Ular Berbisa, Sarang Tawon, & Pohon Tumbang"
+    ],
+    "address": "Jl. Imam Bonjol No.188, Pemecutan Klod, Kec. Denpasar Bar., Kota Denpasar",
+    "location": {
+      "type": "Point",
+      "coordinates": [115.2036, -8.6806]
+    },
+    "is_24_hours": true,
+    "sync_version": 1
+  }
+]

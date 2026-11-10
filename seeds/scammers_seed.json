@@ -1,0 +1,171 @@
+[
+  {
+    "phone_e164": "+6281299887766",
+    "country_code": "ID",
+    "carrier": "Telkomsel (Simpati/Halo)",
+    "reputation_level": "DANGER_SCAM",
+    "spam_score": 92.5,
+    "primary_category": "APK_SNIFFING",
+    "primary_category_label": "Penipuan Modus File APK (Kurir/Undangan/Tilang)",
+    "is_danger": true,
+    "top_community_label": "Penipu Kurir Paket J&T File Resi.apk",
+    "tags": [
+      { "tag": "Penipu Kurir Paket J&T File Resi.apk", "count": 14 },
+      { "tag": "Modus Lihat Foto Paket APK", "count": 6 },
+      { "tag": "Scam Kurir Menguras M-Banking", "count": 4 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 0,
+      "APK_SNIFFING": 21,
+      "IMPERSONATION": 3,
+      "JUDOL": 0,
+      "SOCIAL_ENG": 0,
+      "TELEMARKETING": 0
+    },
+    "unique_reporters": 24,
+    "total_reports": 24,
+    "is_official_blacklisted": true,
+    "is_whitelisted_verified": false,
+    "sync_version": 1
+  },
+  {
+    "phone_e164": "+6285711223344",
+    "country_code": "ID",
+    "carrier": "Indosat Ooredoo Hutchison (IM3)",
+    "reputation_level": "DANGER_SCAM",
+    "spam_score": 88.0,
+    "primary_category": "PINJOL_DC",
+    "primary_category_label": "Pinjol Ilegal & Debt Collector Meresahkan",
+    "is_danger": true,
+    "top_community_label": "DC Pinjol Ilegal Sebar Data & Maki-maki",
+    "tags": [
+      { "tag": "DC Pinjol Ilegal Sebar Data & Maki-maki", "count": 12 },
+      { "tag": "Teror Pinjol Tidak Berizin OJK", "count": 7 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 18,
+      "APK_SNIFFING": 0,
+      "IMPERSONATION": 0,
+      "JUDOL": 0,
+      "SOCIAL_ENG": 1,
+      "TELEMARKETING": 0
+    },
+    "unique_reporters": 19,
+    "total_reports": 19,
+    "is_official_blacklisted": true,
+    "is_whitelisted_verified": false,
+    "sync_version": 2
+  },
+  {
+    "phone_e164": "+6281377665544",
+    "country_code": "ID",
+    "carrier": "Telkomsel (Simpati/Halo)",
+    "reputation_level": "DANGER_SCAM",
+    "spam_score": 84.2,
+    "primary_category": "IMPERSONATION",
+    "primary_category_label": "Impersonasi / CS Palsu (Bank/E-Wallet/Pajak/Bea Cukai)",
+    "is_danger": true,
+    "top_community_label": "Penipu CS Bank BCA Palsu (Modus Tarif Rp150rb/bln)",
+    "tags": [
+      { "tag": "Penipu CS Bank BCA Palsu (Modus Tarif Rp150rb/bln)", "count": 10 },
+      { "tag": "Minta OTP & PIN M-Banking", "count": 5 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 0,
+      "APK_SNIFFING": 1,
+      "IMPERSONATION": 14,
+      "JUDOL": 0,
+      "SOCIAL_ENG": 0,
+      "TELEMARKETING": 0
+    },
+    "unique_reporters": 15,
+    "total_reports": 15,
+    "is_official_blacklisted": false,
+    "is_whitelisted_verified": false,
+    "sync_version": 3
+  },
+  {
+    "phone_e164": "+6289655443322",
+    "country_code": "ID",
+    "carrier": "Indosat Ooredoo Hutchison (Tri/3)",
+    "reputation_level": "SPAM",
+    "spam_score": 56.4,
+    "primary_category": "JUDOL",
+    "primary_category_label": "Promosi Judi Online (Judol)",
+    "is_danger": true,
+    "top_community_label": "Spam Robocall & Blast WA Situs Slot Judol",
+    "tags": [
+      { "tag": "Spam Robocall & Blast WA Situs Slot Judol", "count": 6 },
+      { "tag": "Promosi Judi Online Meresahkan", "count": 3 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 0,
+      "APK_SNIFFING": 0,
+      "IMPERSONATION": 0,
+      "JUDOL": 8,
+      "SOCIAL_ENG": 0,
+      "TELEMARKETING": 1
+    },
+    "unique_reporters": 9,
+    "total_reports": 9,
+    "is_official_blacklisted": false,
+    "is_whitelisted_verified": false,
+    "sync_version": 4
+  },
+  {
+    "phone_e164": "+6287812349876",
+    "country_code": "ID",
+    "carrier": "XL Axiata",
+    "reputation_level": "DANGER_SCAM",
+    "spam_score": 79.6,
+    "primary_category": "SOCIAL_ENG",
+    "primary_category_label": "Penipuan Sosial / Hipnotis Telepon",
+    "is_danger": true,
+    "top_community_label": "Penipu Modus Anak Kecelakaan Masuk IGD RS",
+    "tags": [
+      { "tag": "Penipu Modus Anak Kecelakaan Masuk IGD RS", "count": 8 },
+      { "tag": "Mengaku Dokter/Polisi Minta Transfer Uang Operasi", "count": 4 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 0,
+      "APK_SNIFFING": 0,
+      "IMPERSONATION": 2,
+      "JUDOL": 0,
+      "SOCIAL_ENG": 10,
+      "TELEMARKETING": 0
+    },
+    "unique_reporters": 12,
+    "total_reports": 12,
+    "is_official_blacklisted": false,
+    "is_whitelisted_verified": false,
+    "sync_version": 5
+  },
+  {
+    "phone_e164": "+622150889900",
+    "country_code": "ID",
+    "carrier": "PSTN Telkom (Jabodetabek)",
+    "reputation_level": "SPAM",
+    "spam_score": 44.0,
+    "primary_category": "TELEMARKETING",
+    "primary_category_label": "Telemarketing / Spam Promosi Agresif",
+    "is_danger": true,
+    "top_community_label": "Telemarketing KTA & Asuransi Menelepon Berulang",
+    "tags": [
+      { "tag": "Telemarketing KTA & Asuransi Menelepon Berulang", "count": 5 },
+      { "tag": "Sales Kartu Kredit Jam Istirahat", "count": 2 }
+    ],
+    "category_breakdown": {
+      "PINJOL_DC": 0,
+      "APK_SNIFFING": 0,
+      "IMPERSONATION": 0,
+      "JUDOL": 0,
+      "SOCIAL_ENG": 0,
+      "TELEMARKETING": 7
+    },
+    "unique_reporters": 7,
+    "total_reports": 7,
+    "is_official_blacklisted": false,
+    "is_whitelisted_verified": false,
+    "sync_version": 6
+  }
+]
