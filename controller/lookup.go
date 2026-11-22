@@ -24,6 +24,11 @@ func LookupPhone(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, _, err := helper.AuthenticateRequest(r); err != nil {
+		helper.WriteError(w, http.StatusUnauthorized, "Token autentikasi tidak valid atau kedaluwarsa: "+err.Error())
+		return
+	}
+
 	rawPhone := helper.ExtractPathParam(r.URL.Path, "/api/v1/phones/")
 	if rawPhone == "" {
 		rawPhone = r.URL.Query().Get("phone")
@@ -47,6 +52,15 @@ func LookupPhone(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		helper.WriteError(w, http.StatusInternalServerError, "Gagal memeriksa reputasi nomor: "+err.Error())
 		return
+	}
+
+	verified, err := config.GetActiveVerifiedNumber(ctx, phoneE164, time.Now().UTC())
+	if err != nil {
+		helper.WriteError(w, http.StatusInternalServerError, "Gagal memeriksa verifikasi nomor: "+err.Error())
+		return
+	}
+	if verified != nil && pt == nil {
+		pt = &model.PhoneTag{PhoneE164: phoneE164, Carrier: helper.DetectIndonesianCarrier(phoneE164), ReputationLevel: model.ReputationClean, Tags: []model.TagCount{}, CategoryBreakdown: map[string]int{}}
 	}
 
 	if pt == nil {
@@ -80,7 +94,7 @@ func LookupPhone(w http.ResponseWriter, r *http.Request) {
 
 	resp := model.LookupResponse{
 		PhoneE164:             pt.PhoneE164,
-		Carrier:               pt.Carrier,
+		Carrier:               helper.DetectIndonesianCarrier(phoneE164),
 		Found:                 true,
 		ReputationLevel:       pt.ReputationLevel,
 		RiskScore:             score,
@@ -99,6 +113,17 @@ func LookupPhone(w http.ResponseWriter, r *http.Request) {
 		LastReportedAt:        lastRep,
 	}
 
+	// Status verifikasi selalu mengikuti bukti aktif, bukan flag agregat yang dapat usang.
+	resp.IsWhitelistedVerified = verified != nil
+	if verified != nil {
+		resp.VerifiedLabel = verified.Kind
+		resp.VerifiedSourceURL = verified.SourceURL
+		resp.VerifiedAt = &verified.VerifiedAt
+		resp.TopCommunityLabel = verified.DisplayLabel
+		resp.ReputationLevel = model.ReputationClean
+		resp.RiskScore, resp.SpamScore, resp.IsDanger = 0, 0, false
+	}
+
 	helper.WriteSuccess(w, http.StatusOK, "Informasi reputasi nomor berhasil diambil", resp)
 }
 
@@ -111,6 +136,11 @@ func GetPhoneReports(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method != http.MethodGet {
 		helper.WriteError(w, http.StatusMethodNotAllowed, "Metode HTTP tidak diizinkan, gunakan GET")
+		return
+	}
+
+	if _, _, err := helper.AuthenticateRequest(r); err != nil {
+		helper.WriteError(w, http.StatusUnauthorized, "Token autentikasi tidak valid atau kedaluwarsa: "+err.Error())
 		return
 	}
 

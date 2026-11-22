@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CallTag · Ruang Moderasi</title><link rel="stylesheet" href="/admin/assets/admin.css"><script defer src="/admin/assets/admin.js"></script>
+</head>
+<body>
+<header><a class="brand" href="/admin"><span class="mark">#</span>CallTag <span class="muted">/ Ruang Moderasi</span></a><div id="identity"></div><button id="logout" class="quiet" hidden>Keluar</button></header>
+<main>
+<section id="login-panel" class="login panel">
+<h1>Masuk ke panel staf</h1><p class="muted">Siapkan kode 6 digit dari aplikasi autentikator.</p>
+<form id="login-form"><label>Username<input name="username" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="32" required></label><label>Kata sandi<input name="password" type="password" autocomplete="current-password" required></label><label>Kode autentikator<input name="totp_code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required></label><button type="submit">Masuk ruang moderasi</button></form>
+</section>
+<div id="workspace" hidden>
+<div class="intro"><div><h1>Panel moderasi</h1></div><button id="refresh" class="quiet">Perbarui data</button></div>
+<nav aria-label="Bagian panel"><button data-tab="cases" aria-current="page">Antrean</button><button data-tab="numbers">Reputasi Nomor</button><button data-tab="curation" data-admin>Direktori Publik</button><button data-tab="audit" data-admin>Audit & ekspor</button></nav>
+<section id="tab-cases" class="panel">
+<div class="section-title"><h2>Antrean kasus</h2><p>Target tinjauan: sanggahan 7 hari, laporan 3 hari.</p></div>
+<div id="metrics" class="metrics" aria-live="polite"></div>
+<form id="filter-form" class="filters"><label>Nomor atau ID kasus<input name="q" type="search"></label><label>Status<select name="status"><option value="ACTIVE">Kasus aktif</option><option value="">Semua status</option><option value="OPEN">Baru</option><option value="UNDER_REVIEW">Ditinjau</option><option value="NEEDS_INFO">Butuh informasi</option><option value="PROCESSING">Diproses</option><option value="ACCEPTED">Diterima</option><option value="REJECTED">Ditolak</option></select></label><label>Jenis<select name="type"><option value="">Semua jenis</option><option value="DISPUTE">Sanggahan</option><option value="REPORT_REVIEW">Laporan / kandidat bahaya</option></select></label><button type="submit" class="quiet">Terapkan filter</button></form>
+<p id="case-count" class="muted" aria-live="polite"></p><div class="table-wrap"><table><thead><tr><th>Nomor / kasus</th><th>Jenis</th><th>Status</th><th>Diajukan / usia</th><th>Tindakan</th></tr></thead><tbody id="case-rows"></tbody></table></div>
+<div id="case-detail" hidden><hr><h3 id="case-title">Detail kasus</h3><dl id="case-evidence"></dl><div id="related-reports"></div><form id="decision-form"><label>Keputusan<select name="outcome"><option value="ACCEPT">Terima sanggahan / laporan</option><option value="REJECT">Tolak</option><option value="NEEDS_INFO">Minta informasi tambahan</option><option value="CONFIRM_DANGER">Konfirmasi DANGER_SCAM</option></select></label><label>Alasan keputusan<textarea name="reason" required maxlength="1000" rows="3"></textarea></label><button type="submit">Simpan keputusan</button></form></div>
+</section>
+<section id="tab-numbers" class="panel" hidden>
+<h2>Reputasi nomor</h2>
+<form id="number-form" class="filters">
+<label>Cari nomor atau tag<input name="q" type="search" maxlength="120" placeholder="Contoh: 0812, kurir, atau pinjol"></label>
+<label>Reputasi<select name="reputation"><option value="">Semua reputasi</option><option value="CLEAN">Bersih</option><option value="SUSPICIOUS">Mencurigakan</option><option value="SPAM">Spam</option><option value="DANGER_SCAM">Bahaya penipuan</option></select></label>
+<button type="submit">Cari</button>
+</form>
+<p id="number-count" class="muted" aria-live="polite"></p>
+<div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Tag / kategori</th><th>Reputasi</th><th>Laporan</th><th>Detail</th></tr></thead><tbody id="number-rows"></tbody></table></div>
+<div class="actions" id="number-pagination" hidden><button type="button" id="number-prev" class="quiet">Sebelumnya</button><button type="button" id="number-next" class="quiet">Berikutnya</button></div>
+<div id="number-result" class="number-detail" hidden></div>
+</section>
+<section id="tab-curation" class="panel" hidden>
+<h2>Direktori publik</h2><p class="muted">Tambahkan sumber resmi dan tanggal pemeriksaan untuk setiap entri.</p>
+<div class="filters">
+<label>Dataset<select id="curation-kind"><option value="verified-numbers">Nomor resmi</option><option value="emergency">Posko dan nomor darurat</option><option value="official-channels">Kanal pengaduan resmi</option></select></label>
+<button type="button" id="new-record">Entri baru</button>
+</div>
+<div class="curation-layout">
+<div><label>Cari entri<input id="curation-search" type="search" placeholder="Nama, nomor, kota, atau kode"></label><p id="curation-count" class="muted" aria-live="polite"></p><div id="curation-list" class="record-list"></div></div>
+<form id="curation-form" hidden>
+<h3 id="curation-title"></h3>
+<div id="curation-fields" class="curation-fields"></div>
+<label>Alasan perubahan<input name="reason" required maxlength="1000"></label>
+<div class="actions"><button type="submit" id="save-record">Simpan entri</button><button type="button" id="cancel-record" class="quiet">Batal</button><button type="button" id="delete-record" class="danger" hidden>Cabut entri</button></div>
+</form>
+</div>
+<dialog id="emergency-preview" aria-labelledby="emergency-preview-title">
+<h3 id="emergency-preview-title">Periksa sebelum terbit</h3>
+<p class="muted">Kontak akan tersedia di menu Darurat saat pengguna menyinkronkan direktori.</p>
+<dl id="emergency-preview-fields"></dl>
+<p id="emergency-preview-error" class="preview-error" role="alert" hidden></p>
+<div class="actions"><button type="button" id="edit-emergency" class="quiet">Kembali edit</button><button type="button" id="publish-emergency">Terbitkan ke Darurat</button></div>
+</dialog>
+<hr><details><summary>Impor CSV / JSON</summary><form id="import-form"><div class="filters"><label>Jenis<select name="kind"><option value="verified">Nomor resmi</option><option value="emergency">Direktori darurat</option><option value="tag_context">Tag konteks</option><option value="scam">Daftar spam eksternal</option></select></label><label>Label sumber<input name="source" value="KURASI_STAF" required></label></div><label>Berkas<input name="file" type="file" accept=".csv,.json" required></label><label>Alasan impor<input name="reason" required></label><label class="check"><input name="dry_run" type="checkbox" checked> Validasi dulu tanpa menyimpan</label><button type="submit">Proses berkas</button><output id="import-result"></output></form></details>
+</section>
+<section id="tab-audit" class="panel" hidden><h2>Audit perubahan</h2><div class="actions"><button id="load-audit" class="quiet">Perbarui audit</button></div><div class="table-wrap"><table><thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi / target</th><th>Alasan</th></tr></thead><tbody id="audit-rows"></tbody></table></div><hr><h3>Unduh rekap</h3><form id="export-form" class="filters"><label>Dataset<select name="dataset"><option value="phone_tags">Reputasi nomor</option><option value="verified_numbers">Nomor resmi</option><option value="moderation_cases">Kasus moderasi</option></select></label><label>Format<select name="format"><option value="json">JSON</option><option value="csv">CSV</option></select></label><button type="submit">Unduh rekap</button></form><p class="muted">Ekspor menggunakan field terkurasi tanpa identitas pelapor atau token sesi.</p></section>
+</div>
+<div id="status" role="status" aria-live="polite" hidden></div>
+</main><footer>CallTag · Panel internal untuk moderator dan admin</footer>
+</body></html>

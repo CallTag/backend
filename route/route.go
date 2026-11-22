@@ -21,6 +21,10 @@ import (
 // 10. GET  /api/v1/sync/offline-bundle
 // 11. GET  /api/v1/stats/public
 func URL(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/admin" || strings.HasPrefix(r.URL.Path, "/admin/") || r.URL.Path == "/api/v1/admin" || strings.HasPrefix(r.URL.Path, "/api/v1/admin/") {
+		controller.AdminRoute(w, r)
+		return
+	}
 	if r.Method == http.MethodOptions {
 		helper.SetCORS(w)
 		w.WriteHeader(http.StatusNoContent)
@@ -30,16 +34,31 @@ func URL(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 
 	switch {
-	case path == "/" || path == "/health":
+	case path == "/" || path == "/health" || path == "/api/v1/health":
 		controller.HealthCheck(w, r)
+
+	case path == "/healthz":
+		controller.HealthzCheck(w, r)
+
+	case path == "/readyz":
+		controller.ReadyzCheck(w, r)
 
 	case path == "/api/v1/auth/device":
 		controller.AuthLogin(w, r)
 
-	case strings.HasPrefix(path, "/api/v1/phones/") && strings.HasSuffix(path, "/reports"):
+	case path == "/api/v1/auth/google":
+		controller.AuthGoogle(w, r)
+
+	case path == "/api/v1/auth/refresh":
+		controller.AuthRefresh(w, r)
+
+	case path == "/api/v1/me":
+		controller.MeHandler(w, r)
+
+	case strings.HasPrefix(path, "/api/v1/phones/") && strings.HasSuffix(path, "/reports") && !strings.Contains(strings.TrimSuffix(strings.TrimPrefix(path, "/api/v1/phones/"), "/reports"), "/"):
 		controller.GetPhoneReports(w, r)
 
-	case strings.HasPrefix(path, "/api/v1/phones/"):
+	case strings.HasPrefix(path, "/api/v1/phones/") && !strings.Contains(strings.TrimPrefix(path, "/api/v1/phones/"), "/"):
 		controller.LookupPhone(w, r)
 
 	case path == "/api/v1/reports":
@@ -47,6 +66,9 @@ func URL(w http.ResponseWriter, r *http.Request) {
 
 	case path == "/api/v1/disputes":
 		controller.SubmitDispute(w, r)
+
+	case strings.HasPrefix(path, "/api/v1/disputes/"):
+		controller.GetDispute(w, r)
 
 	case path == "/api/v1/emergency/national":
 		controller.GetNationalEmergency(w, r)
@@ -60,10 +82,13 @@ func URL(w http.ResponseWriter, r *http.Request) {
 	case path == "/api/v1/sync/offline-bundle":
 		controller.GetOfflineBundleSync(w, r)
 
+	case path == "/api/v1/sync/changes":
+		controller.GetSyncChangesHandler(w, r)
+
 	case path == "/api/v1/stats/public":
 		controller.GetPublicStats(w, r)
 
 	default:
-		helper.WriteError(w, http.StatusNotFound, "Endpoint tidak ditemukan: "+path)
+		helper.WriteError(w, http.StatusNotFound, "Endpoint tidak ditemukan: "+helper.MaskPhoneInPath(path))
 	}
 }

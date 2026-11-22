@@ -1,0 +1,9 @@
+[
+  {
+    "phone_e164": "+6281200000002",
+    "category_code": "INFO_TAG",
+    "custom_tag": "Contoh Kurir Paket Reguler",
+    "comment": "Contoh konteks layanan; ganti dengan data yang diizinkan",
+    "source": "CONTOH_TEMPLATE"
+  }
+]

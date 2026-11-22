@@ -2,6 +2,7 @@ package helper
 
 import (
 	"math"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -9,6 +10,42 @@ import (
 
 	"github.com/CallTag/backend/model"
 )
+
+var (
+	reEmailPII        = regexp.MustCompile(`(?i)[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}`)
+	reAccountPII      = regexp.MustCompile(`\b\d{8,15}\b`)
+	reNIKPII          = regexp.MustCompile(`\b\d{16}\b`)
+	rePhoneCommentPII = regexp.MustCompile(`(^|[^\w])(\+62|62|0)[\s\-]?8(?:\d[\s\-]?){6,11}\d\b`)
+)
+
+// MaskPhone menyamarkan nomor telepon E.164 untuk keperluan log server agar tidak membocorkan PII (T-106).
+// Contoh: "+6281234567005" -> "+62812****7005".
+func MaskPhone(phoneE164 string) string {
+	p := strings.TrimSpace(phoneE164)
+	if p == "" {
+		return ""
+	}
+	if len(p) <= 6 {
+		return "***"
+	}
+	if len(p) < 10 {
+		return p[:3] + "****" + p[len(p)-2:]
+	}
+	return p[:6] + "****" + p[len(p)-4:]
+}
+
+// SanitizeCommentPII menyaring pola email, NIK 16 digit, dan nomor telepon di dalam komentar laporan publik (T-106).
+func SanitizeCommentPII(comment string) string {
+	cleaned := strings.TrimSpace(comment)
+	if cleaned == "" {
+		return ""
+	}
+	cleaned = reEmailPII.ReplaceAllString(cleaned, "[REDACTED_EMAIL]")
+	cleaned = reNIKPII.ReplaceAllString(cleaned, "[REDACTED_NIK]")
+	cleaned = rePhoneCommentPII.ReplaceAllString(cleaned, "${1}[REDACTED_PHONE]")
+	cleaned = reAccountPII.ReplaceAllString(cleaned, "[REDACTED_NUMBER]")
+	return cleaned
+}
 
 // BaseReportPoint adalah poin dasar per laporan valid sesuai rumus PRD (B = 8.0).
 const BaseReportPoint = 8.0
@@ -24,6 +61,7 @@ type CategoryMeta struct {
 }
 
 var indonesiaTaxonomy = map[model.CategoryCode]CategoryMeta{
+	model.CategoryInfoTag: {Code: model.CategoryInfoTag, Label: "Informasi Layanan / Peran", Weight: 0},
 	model.CategoryPinjolDC: {
 		Code:   model.CategoryPinjolDC,
 		Label:  "Pinjol Ilegal & Debt Collector Meresahkan",
@@ -63,7 +101,7 @@ func GetCategoryInfo(code model.CategoryCode) (CategoryMeta, bool) {
 	return meta, ok
 }
 
-// NormalizePhoneID menormalisasi nomor telepon Indonesia ke format E.164 (+62...).
+// NormalizePhoneID menormalisasi nomor Indonesia ke E.164 dan mempertahankan kode negara eksplisit.
 // Nomor pendek darurat (seperti 112, 110, 113, 119, 14080) dipertahankan apa adanya.
 func NormalizePhoneID(raw string) string {
 	trimmed := strings.TrimSpace(raw)
@@ -80,6 +118,16 @@ func NormalizePhoneID(raw string) string {
 	d := digits.String()
 	if d == "" {
 		return ""
+	}
+
+	// Kode negara eksplisit harus dipertahankan sebelum normalisasi seluler 8xx.
+	if strings.HasPrefix(trimmed, "+") {
+		return "+" + d
+	}
+
+	// Nomor layanan nasional 150xxxx dipanggil tanpa awalan +62.
+	if len(d) == 7 && strings.HasPrefix(d, "150") {
+		return d
 	}
 
 	// Nomor darurat pendek nasional (3-6 digit)
@@ -99,98 +147,82 @@ func NormalizePhoneID(raw string) string {
 	return "+" + d
 }
 
-// DetectIndonesianCarrier mengenali operator seluler/telepon Indonesia berdasarkan prefix E.164.
+// DetectIndonesianCarrier memberi konteks prefix seluler, wilayah PSTN, atau negara internasional.
 func DetectIndonesianCarrier(phoneE164 string) string {
-	prefixes := []struct {
-		prefix  string
-		carrier string
-	}{
-		{"+62811", "Telkomsel (Halo)"},
-		{"+62812", "Telkomsel (Simpati/Halo)"},
-		{"+62813", "Telkomsel (Simpati/Halo)"},
-		{"+62821", "Telkomsel (Simpati)"},
-		{"+62822", "Telkomsel (Loop/Simpati)"},
-		{"+62823", "Telkomsel (AS)"},
-		{"+62851", "Telkomsel (by.U / AS)"},
-		{"+62852", "Telkomsel (AS)"},
-		{"+62853", "Telkomsel (AS)"},
-		{"+62814", "Indosat Ooredoo Hutchison"},
-		{"+62815", "Indosat Ooredoo Hutchison (Mentari/Matrix)"},
-		{"+62816", "Indosat Ooredoo Hutchison (IM3/Matrix)"},
-		{"+62855", "Indosat Ooredoo Hutchison (Matrix)"},
-		{"+62856", "Indosat Ooredoo Hutchison (IM3)"},
-		{"+62857", "Indosat Ooredoo Hutchison (IM3)"},
-		{"+62858", "Indosat Ooredoo Hutchison (Mentari)"},
-		{"+62895", "Indosat Ooredoo Hutchison (Tri/3)"},
-		{"+62896", "Indosat Ooredoo Hutchison (Tri/3)"},
-		{"+62897", "Indosat Ooredoo Hutchison (Tri/3)"},
-		{"+62898", "Indosat Ooredoo Hutchison (Tri/3)"},
-		{"+62899", "Indosat Ooredoo Hutchison (Tri/3)"},
-		{"+62817", "XL Axiata"},
-		{"+62818", "XL Axiata"},
-		{"+62819", "XL Axiata"},
-		{"+62859", "XL Axiata"},
-		{"+62877", "XL Axiata"},
-		{"+62878", "XL Axiata"},
-		{"+62831", "XL Axiata (AXIS)"},
-		{"+62832", "XL Axiata (AXIS)"},
-		{"+62833", "XL Axiata (AXIS)"},
-		{"+62838", "XL Axiata (AXIS)"},
-		{"+62881", "Smartfren"},
-		{"+62882", "Smartfren"},
-		{"+62883", "Smartfren"},
-		{"+62884", "Smartfren"},
-		{"+62885", "Smartfren"},
-		{"+62886", "Smartfren"},
-		{"+62887", "Smartfren"},
-		{"+62888", "Smartfren"},
-		{"+62889", "Smartfren"},
-		{"+6221", "PSTN Telkom (Jabodetabek)"},
-		{"+6222", "PSTN Telkom (Bandung)"},
-		{"+6224", "PSTN Telkom (Semarang)"},
-		{"+62274", "PSTN Telkom (Yogyakarta)"},
-		{"+6231", "PSTN Telkom (Surabaya)"},
-		{"+6261", "PSTN Telkom (Medan)"},
-		{"+62411", "PSTN Telkom (Makassar)"},
-		{"+62361", "PSTN Telkom (Denpasar)"},
-	}
-
-	for _, item := range prefixes {
-		if strings.HasPrefix(phoneE164, item.prefix) {
-			return item.carrier
-		}
-	}
-	if len(phoneE164) <= 6 {
-		return "Layanan Darurat Nasional Indonesia"
-	}
-	return "Operator Telekomunikasi Indonesia"
+	return detectCarrierContext(phoneE164)
 }
 
-// DetermineReputationLevel menetapkan status bahaya sesuai ambang batas (Threshold) pada PRD Bagian 4.3.
-func DetermineReputationLevel(score float64, uniqueReporters int, isOfficialBlacklisted bool, isWhitelisted bool) model.ReputationLevel {
-	if isWhitelisted {
-		return model.ReputationClean
+// ReportMaxAgeDays adalah batas maksimal umur laporan aktif (12 bulan / 365 hari) sesuai T-206.
+const ReportMaxAgeDays = 365.0
+
+// MaskPhoneInPath menyamarkan nomor telepon pada path URL seperti /api/v1/phones/+6281234567005/reports (T-203).
+func MaskPhoneInPath(path string) string {
+	const prefix = "/api/v1/phones/"
+	if !strings.HasPrefix(path, prefix) {
+		return path
 	}
-	if isOfficialBlacklisted || (score >= 70.0 && uniqueReporters >= 5) {
-		return model.ReputationDangerScam
+	rest := strings.TrimPrefix(path, prefix)
+	slashIdx := strings.Index(rest, "/")
+	if slashIdx < 0 {
+		return prefix + MaskPhone(rest)
+	}
+	rawPhone := rest[:slashIdx]
+	suffix := rest[slashIdx:]
+	return prefix + MaskPhone(rawPhone) + suffix
+}
+
+// ClampTrustWeight membatasi trust_weight pelapor pada rentang [0.25, 1.5] dengan default 1.0 bila <= 0 (T-202).
+func ClampTrustWeight(trust float64) float64 {
+	if trust <= 0 {
+		return 1.0
+	}
+	if trust < 0.25 {
+		return 0.25
+	}
+	if trust > 1.5 {
+		return 1.5
+	}
+	return trust
+}
+
+// DetermineReputationLevelWithGate menetapkan status bahaya beserta status pending review moderator untuk DANGER_SCAM (OD-03, T-202).
+func DetermineReputationLevelWithGate(score float64, uniqueReporters int, isOfficialBlacklisted, isWhitelisted, isModeratorConfirmed bool) (model.ReputationLevel, bool) {
+	if isWhitelisted {
+		return model.ReputationClean, false
+	}
+	if isOfficialBlacklisted {
+		return model.ReputationDangerScam, false
+	}
+	if score >= 70.0 && uniqueReporters >= 5 {
+		if isModeratorConfirmed {
+			return model.ReputationDangerScam, false
+		}
+		return model.ReputationSpam, true
 	}
 	if score >= 40.0 && uniqueReporters >= 3 {
-		return model.ReputationSpam
+		return model.ReputationSpam, false
 	}
 	if score >= 15.0 && uniqueReporters >= 2 {
-		return model.ReputationSuspicious
+		return model.ReputationSuspicious, false
 	}
-	// Jika skor sangat tinggi dari 1-2 laporan awal (misal APK_SNIFFING), minimal beri peringatan SUSPICIOUS
-	if score >= 15.0 && uniqueReporters >= 1 {
-		return model.ReputationSuspicious
-	}
-	return model.ReputationClean
+	return model.ReputationClean, false
 }
 
-// AggregatePhoneTag menghitung ulang Risk Score, kategori dominan, daftar tag nama, dan level reputasi
-// dari daftar laporan SpamReport untuk suatu nomor telepon.
+// DetermineReputationLevel menetapkan status bahaya sesuai ambang batas PRD yang telah dikalibrasi (tanpa bypass N >= 2).
+func DetermineReputationLevel(score float64, uniqueReporters int, isOfficialBlacklisted bool, isWhitelisted bool) model.ReputationLevel {
+	level, _ := DetermineReputationLevelWithGate(score, uniqueReporters, isOfficialBlacklisted, isWhitelisted, isOfficialBlacklisted)
+	return level
+}
+
+// AggregatePhoneTag menghitung ulang reputasi nomor telepon memakai waktu UTC saat ini.
 func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nextSyncVersion int64) model.PhoneTag {
-	now := time.Now().UTC()
+	return AggregatePhoneTagWithTime(existing, reports, nextSyncVersion, time.Now().UTC())
+}
+
+// AggregatePhoneTagWithTime menghitung ulang Risk Score, kategori dominan deterministik, daftar tag, gerbang OD-03,
+// dan kedaluwarsa 12 bulan (365 hari) berdasarkan waktu referensi now (T-202, T-206).
+func AggregatePhoneTagWithTime(existing *model.PhoneTag, reports []model.SpamReport, nextSyncVersion int64, now time.Time) model.PhoneTag {
+	now = now.UTC()
 	phoneE164 := ""
 	if existing != nil {
 		phoneE164 = existing.PhoneE164
@@ -208,14 +240,23 @@ func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nex
 	}
 
 	tagMap := make(map[string]int)
-	uniqueReporterSet := make(map[string]bool)
-	var rawScore float64
+	bestPerReporter := make(map[string]float64)
+	var activeReportCount int
 	var firstAt, lastAt time.Time
 
 	for _, rep := range reports {
-		if rep.Status == "REJECTED" {
+		if rep.Status == "REJECTED" || rep.Status == "PENDING_MOD" {
 			continue
 		}
+		daysElapsed := now.Sub(rep.CreatedAt).Hours() / 24.0
+		if daysElapsed > ReportMaxAgeDays {
+			continue
+		}
+		if daysElapsed < 0 {
+			daysElapsed = 0
+		}
+
+		activeReportCount++
 		meta, ok := GetCategoryInfo(rep.CategoryCode)
 		if !ok {
 			meta = indonesiaTaxonomy[model.CategoryTelemarketing]
@@ -236,22 +277,11 @@ func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nex
 			reporterKey = rep.ID.Hex()
 		}
 
-		// Deduplikasi kontribusi skor per pelapor unik
-		if !uniqueReporterSet[reporterKey] {
-			uniqueReporterSet[reporterKey] = true
-
-			trust := rep.ReporterTrustSnapshot
-			if trust <= 0 {
-				trust = 1.0
-			}
-
-			daysElapsed := now.Sub(rep.CreatedAt).Hours() / 24.0
-			if daysElapsed < 0 {
-				daysElapsed = 0
-			}
-			decay := math.Pow(0.5, daysElapsed/HalfLifeDays)
-
-			rawScore += BaseReportPoint * meta.Weight * trust * decay
+		trust := ClampTrustWeight(rep.ReporterTrustSnapshot)
+		decay := math.Pow(0.5, daysElapsed/HalfLifeDays)
+		contrib := BaseReportPoint * meta.Weight * trust * decay
+		if contrib > bestPerReporter[reporterKey] {
+			bestPerReporter[reporterKey] = contrib
 		}
 
 		if firstAt.IsZero() || rep.CreatedAt.Before(firstAt) {
@@ -262,11 +292,16 @@ func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nex
 		}
 	}
 
-	finalScore := math.Min(100.0, math.Round(rawScore*10)/10)
-	uniqueReporters := len(uniqueReporterSet)
+	var rawScore float64
+	for _, c := range bestPerReporter {
+		rawScore += c
+	}
 
-	// Urutkan tag berdasarkan jumlah vote terbanyak
-	var tags []model.TagCount
+	finalScore := math.Min(100.0, math.Round(rawScore*100)/100)
+	uniqueReporters := len(bestPerReporter)
+
+	// Urutkan tag berdasarkan jumlah vote terbanyak lalu abjad
+	tags := make([]model.TagCount, 0, len(tagMap))
 	for t, c := range tagMap {
 		tags = append(tags, model.TagCount{Tag: t, Count: c})
 	}
@@ -277,16 +312,44 @@ func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nex
 		return tags[i].Count > tags[j].Count
 	})
 
-	// Cari kategori dominan
+	// Cari kategori dominan secara deterministik (jumlah -> bobot -> kode abjad)
 	primaryCat := model.CategoryTelemarketing
-	maxCatCount := -1
-	for codeStr, cnt := range categoryBreakdown {
-		if cnt > maxCatCount {
-			maxCatCount = cnt
-			primaryCat = model.CategoryCode(codeStr)
+	primaryMeta, _ := GetCategoryInfo(primaryCat)
+	if activeReportCount == 0 {
+		primaryCat = ""
+		primaryMeta = CategoryMeta{}
+	} else {
+		type catCandidate struct {
+			code   model.CategoryCode
+			count  int
+			weight float64
+		}
+		var candidates []catCandidate
+		for codeStr, cnt := range categoryBreakdown {
+			if cnt <= 0 || (codeStr == string(model.CategoryInfoTag) && len(bestPerReporter) > 0) {
+				continue
+			}
+			m, _ := GetCategoryInfo(model.CategoryCode(codeStr))
+			candidates = append(candidates, catCandidate{
+				code:   model.CategoryCode(codeStr),
+				count:  cnt,
+				weight: m.Weight,
+			})
+		}
+		if len(candidates) > 0 {
+			sort.Slice(candidates, func(i, j int) bool {
+				if candidates[i].count != candidates[j].count {
+					return candidates[i].count > candidates[j].count
+				}
+				if candidates[i].weight != candidates[j].weight {
+					return candidates[i].weight > candidates[j].weight
+				}
+				return string(candidates[i].code) < string(candidates[j].code)
+			})
+			primaryCat = candidates[0].code
+			primaryMeta, _ = GetCategoryInfo(primaryCat)
 		}
 	}
-	primaryMeta, _ := GetCategoryInfo(primaryCat)
 
 	topLabel := primaryMeta.Label
 	if len(tags) > 0 {
@@ -295,34 +358,45 @@ func AggregatePhoneTag(existing *model.PhoneTag, reports []model.SpamReport, nex
 
 	isOfficialBlacklisted := false
 	isWhitelisted := false
+	isModeratorConfirmed := false
 	if existing != nil {
 		isOfficialBlacklisted = existing.IsOfficialBlacklisted
 		isWhitelisted = existing.IsWhitelistedVerified
+		isModeratorConfirmed = existing.ModeratorConfirmedDanger
 	}
 
-	repLevel := DetermineReputationLevel(finalScore, uniqueReporters, isOfficialBlacklisted, isWhitelisted)
+	repLevel, pendingDanger := DetermineReputationLevelWithGate(finalScore, uniqueReporters, isOfficialBlacklisted, isWhitelisted, isModeratorConfirmed)
+
+	var expiresAt time.Time
+	if !lastAt.IsZero() {
+		expiresAt = lastAt.Add(time.Duration(ReportMaxAgeDays) * 24 * time.Hour)
+	}
 
 	result := model.PhoneTag{
-		PhoneE164:             phoneE164,
-		CountryCode:           "ID",
-		Carrier:               DetectIndonesianCarrier(phoneE164),
-		ReputationLevel:       repLevel,
-		RiskScore:             finalScore,
-		SpamScore:             finalScore,
-		PrimaryCategory:       primaryCat,
-		PrimaryCategoryLabel:  primaryMeta.Label,
-		IsDanger:              repLevel == model.ReputationDangerScam || repLevel == model.ReputationSpam,
-		TopCommunityLabel:     topLabel,
-		Tags:                  tags,
-		CategoryBreakdown:     categoryBreakdown,
-		UniqueReporters:       uniqueReporters,
-		TotalReports:          len(reports),
-		IsOfficialBlacklisted: isOfficialBlacklisted,
-		IsWhitelistedVerified: isWhitelisted,
-		SyncVersion:           nextSyncVersion,
-		FirstReportedAt:       firstAt,
-		LastReportedAt:        lastAt,
-		UpdatedAt:             now,
+		PhoneE164:                phoneE164,
+		CountryCode:              "ID",
+		Carrier:                  DetectIndonesianCarrier(phoneE164),
+		ReputationLevel:          repLevel,
+		RiskScore:                finalScore,
+		SpamScore:                finalScore,
+		PrimaryCategory:          primaryCat,
+		PrimaryCategoryLabel:     primaryMeta.Label,
+		IsDanger:                 repLevel == model.ReputationDangerScam || repLevel == model.ReputationSpam,
+		ModeratorConfirmedDanger: isModeratorConfirmed,
+		PendingDangerReview:      pendingDanger,
+		TopCommunityLabel:        topLabel,
+		Tags:                     tags,
+		CategoryBreakdown:        categoryBreakdown,
+		UniqueReporters:          uniqueReporters,
+		TotalReports:             activeReportCount,
+		IsOfficialBlacklisted:    isOfficialBlacklisted,
+		IsWhitelistedVerified:    isWhitelisted,
+		SyncVersion:              nextSyncVersion,
+		FirstReportedAt:          firstAt,
+		LastReportedAt:           lastAt,
+		LastActivityAt:           lastAt,
+		ExpiresAt:                expiresAt,
+		UpdatedAt:                now,
 	}
 	if existing != nil && !existing.ID.IsZero() {
 		result.ID = existing.ID

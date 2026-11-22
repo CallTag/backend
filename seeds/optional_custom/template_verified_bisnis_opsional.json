@@ -1,0 +1,11 @@
+[
+  {
+    "phone_e164": "+622200000001",
+    "kind": "PUBLIC_SERVICE",
+    "display_label": "Contoh Helpdesk (ganti dengan data asli)",
+    "source_url": "https://example.ac.id/kontak",
+    "verified_at": "2026-11-16T00:00:00Z",
+    "expires_at": "2027-11-16T00:00:00Z",
+    "source": "CONTOH_TEMPLATE"
+  }
+]
