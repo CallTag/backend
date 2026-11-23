@@ -19,13 +19,9 @@ const (
 	ColRefreshTokens      = "refresh_tokens"
 )
 
-// GetAppEnv mengambil mode lingkungan aplikasi dari APP_ENV (default: "dev").
+// GetAppEnv mengambil mode lingkungan aplikasi yang dipilih operator.
 func GetAppEnv() string {
-	env := strings.TrimSpace(os.Getenv("APP_ENV"))
-	if env == "" {
-		return "dev"
-	}
-	return strings.ToLower(env)
+	return strings.ToLower(strings.TrimSpace(os.Getenv("APP_ENV")))
 }
 
 // IsProdEnv mengembalikan true apabila backend berjalan dalam mode produksi (prod/production).
@@ -34,10 +30,14 @@ func IsProdEnv() bool {
 	return env == "prod" || env == "production"
 }
 
-// ValidateConfig memvalidasi konfigurasi keamanan wajib pada mode produksi secara fail-closed (T-102, T-107).
+// ValidateConfig mewajibkan mode eksplisit dan konfigurasi keamanan produksi.
 func ValidateConfig() error {
-	if !IsProdEnv() {
+	switch GetAppEnv() {
+	case "dev":
 		return nil
+	case "prod", "production":
+	default:
+		return errors.New("APP_ENV wajib diisi dengan dev, prod, atau production")
 	}
 
 	if strings.TrimSpace(GetMongoURI()) == "" {
@@ -54,9 +54,9 @@ func ValidateConfig() error {
 
 // GetMongoURI mengambil connection string MongoDB dari environment variable MONGOSTRING (konvensi gocroot) atau MONGODB_URI.
 func GetMongoURI() string {
-	uri := os.Getenv("MONGOSTRING")
+	uri := strings.TrimSpace(os.Getenv("MONGOSTRING"))
 	if uri == "" {
-		uri = os.Getenv("MONGODB_URI")
+		uri = strings.TrimSpace(os.Getenv("MONGODB_URI"))
 	}
 	return uri
 }

@@ -19,6 +19,10 @@ import (
 )
 
 func TestBackendPRDEndpoints(t *testing.T) {
+	t.Setenv("APP_ENV", "dev")
+	t.Setenv("MONGOSTRING", "")
+	t.Setenv("MONGODB_URI", "")
+	t.Setenv("GOOGLE_CLIENT_ID", "")
 	config.InitDatabase()
 
 	// 1. Test GET /health
@@ -511,6 +515,7 @@ func TestT20_ReadinessProbeAndProdStrict(t *testing.T) {
 	// 2. Mode dev in-memory /readyz -> 200
 	t.Setenv("APP_ENV", "dev")
 	t.Setenv("MONGOSTRING", "")
+	t.Setenv("MONGODB_URI", "")
 	reqRzDev := httptest.NewRequest(http.MethodGet, "/readyz", nil)
 	recRzDev := httptest.NewRecorder()
 	route.URL(recRzDev, reqRzDev)

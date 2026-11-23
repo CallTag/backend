@@ -58,15 +58,10 @@ func InitDatabase() {
 		log.Fatalf("[config/db] %v\n", err)
 	}
 
-	if !IsProdEnv() {
-		initMemorySeed()
-	}
-
 	uri := GetMongoURI()
 	if uri == "" {
-		if IsProdEnv() {
-			log.Fatalln("[config/db] MONGOSTRING wajib diset pada mode produksi.")
-		}
+		// Validasi di atas hanya mengizinkan URI kosong pada mode dev.
+		initMemorySeed()
 		log.Println("[config/db] MONGOSTRING belum diset. Menggunakan penyimpanan in-memory yang telah di-seed untuk mode pengembangan.")
 		return
 	}
@@ -77,19 +72,11 @@ func InitDatabase() {
 	clientOpts := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {
-		if IsProdEnv() {
-			log.Fatalf("[config/db] Gagal terhubung ke MongoDB pada mode produksi: %v\n", err)
-		}
-		log.Printf("[config/db] Gagal membuat client MongoDB (%v), beralih ke fallback in-memory.\n", err)
-		return
+		log.Fatalf("[config/db] Gagal menyiapkan koneksi MongoDB. Periksa konfigurasi URI (APP_ENV=%s).", GetAppEnv())
 	}
 
 	if err := client.Ping(ctx, nil); err != nil {
-		if IsProdEnv() {
-			log.Fatalf("[config/db] MongoDB tidak merespons ping pada mode produksi: %v\n", err)
-		}
-		log.Printf("[config/db] MongoDB tidak merespons ping (%v), beralih ke fallback in-memory.\n", err)
-		return
+		log.Fatalf("[config/db] Ping MongoDB gagal. Periksa akses database dan kredensial (APP_ENV=%s).", GetAppEnv())
 	}
 
 	MongoClient = client
@@ -98,10 +85,7 @@ func InitDatabase() {
 	log.Printf("[config/db] Terhubung ke MongoDB database: %s (APP_ENV=%s)\n", GetDBName(), GetAppEnv())
 
 	if err := EnsureIndexesAndSeed(ctx); err != nil {
-		if IsProdEnv() {
-			log.Fatalf("[config/db] Gagal menyiapkan index MongoDB pada mode produksi: %v\n", err)
-		}
-		log.Printf("[config/db] Peringatan saat membuat index/seed MongoDB: %v\n", err)
+		log.Fatalf("[config/db] Gagal menyiapkan index atau seed MongoDB (APP_ENV=%s): %v", GetAppEnv(), err)
 	}
 }
 
@@ -137,14 +121,11 @@ func PingDatabase(ctx context.Context) error {
 		defer cancel()
 		return MongoClient.Ping(pingCtx, nil)
 	}
-	if IsProdEnv() {
-		return errors.New("koneksi MongoDB belum aktif pada mode produksi")
-	}
-	if strings.TrimSpace(GetMongoURI()) != "" {
-		return errors.New("MongoDB terkonfigurasi tetapi koneksi tidak aktif")
+	if GetAppEnv() == "dev" && GetMongoURI() == "" {
+		return nil
 	}
 
-	return nil
+	return errors.New("koneksi MongoDB belum aktif")
 }
 
 func initMemorySeed() {
